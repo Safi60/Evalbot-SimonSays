@@ -1,0 +1,206 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ;; RK - Evalbot (Cortex M3 de Texas Instrument)
+    2 00000000         ; programme - Jeu de mémorisation reprenant le jeu Simon
+                       Says en ASM
+    3 00000000         ; par Safi HANIFA et Yanis AIT TAOUIT
+    4 00000000         
+    5 00000000         
+    6 00000000         
+    7 00000000                 AREA             |.text|, CODE, READONLY
+    8 00000000                 ENTRY
+    9 00000000                 EXPORT           DANSE
+   10 00000000         ;EXPORT WAIT
+   11 00000000         
+   12 00000000         ; IMPORT 
+   13 00000000                 IMPORT           MOTEUR_INIT ; initialise les mo
+                                                            teurs (configure le
+                                                            s pwms + GPIO)
+   14 00000000         
+   15 00000000                 IMPORT           MOTEUR_DROIT_ON ; activer le mo
+                                                            teur droit
+   16 00000000                 IMPORT           MOTEUR_DROIT_OFF ; déactiver le
+                                                             moteur droit
+   17 00000000                 IMPORT           MOTEUR_DROIT_ARRIERE ; moteur d
+                                                            roit tourne vers l'
+                                                            arrière
+   18 00000000         
+   19 00000000                 IMPORT           MOTEUR_GAUCHE_ON ; activer le m
+                                                            oteur gauche
+   20 00000000                 IMPORT           MOTEUR_GAUCHE_OFF ; déactiver l
+                                                            e moteur gauche
+   21 00000000                 IMPORT           MOTEUR_GAUCHE_AVANT ; moteur ga
+                                                            uche tourne vers l'
+                                                            avant
+   22 00000000         
+   23 00000000         ; Durée danse
+   24 00000000 020FFFFD 
+                       DUREE   EQU              0x20FFFFD
+   25 00000000         
+   26 00000000         ; ------------------------------------------------------
+                       ----------------------------
+   27 00000000         
+   28 00000000         
+   29 00000000         DANSE
+   30 00000000 F04F 0200       MOV              r2, #0
+   31 00000004 F44F 73FA       MOV              r3, #500
+   32 00000008         ; Configure les PWM + GPIO
+   33 00000008 F7FF FFFE       BL               MOTEUR_INIT
+   34 0000000C         
+   35 0000000C         ; Activer les deux moteurs droit et gauche
+   36 0000000C F7FF FFFE       BL               MOTEUR_DROIT_ON
+   37 00000010 F7FF FFFE       BL               MOTEUR_GAUCHE_ON
+   38 00000014         
+   39 00000014         ; Rotation à droite de l'Evalbot
+   40 00000014 F7FF FFFE       BL               MOTEUR_DROIT_ARRIERE
+   41 00000018 F7FF FFFE       BL               MOTEUR_GAUCHE_AVANT
+   42 0000001C F000 F800       BL               WAIT
+   43 00000020         
+   44 00000020         
+   45 00000020         ; Boucle Attente
+   46 00000020 4903    WAIT    LDR              r1,=DUREE
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   47 00000022 3901    wait1   SUBS             r1, #1
+   48 00000024 D1FD            BNE              wait1
+   49 00000026         ; Arret des moteurs
+   50 00000026 F7FF FFFE       BL               MOTEUR_DROIT_OFF
+   51 0000002A F7FF FFFE       BL               MOTEUR_GAUCHE_OFF
+   52 0000002E         
+   53 0000002E 4770            BX               LR
+   54 00000030         
+   55 00000030                 END
+              020FFFFD 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
+ork --depend=.\objects\moteurs.d -o.\objects\moteurs.o -I.\RTE\_Target_1 -IC:\U
+sers\Safi\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include -IC:\Users
+\Safi\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\Device\ARM\ARMCM3\Include --prede
+fine="__EVAL SETA 1" --predefine="__MICROLIB SETA 1" --predefine="__UVISION_VER
+SION SETA 528" --predefine="_RTE_ SETA 1" --predefine="ARMCM3 SETA 1" --list=.\
+listings\moteurs.lst Moteurs.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+.text 00000000
+
+Symbol: .text
+   Definitions
+      At line 7 in file Moteurs.s
+   Uses
+      None
+Comment: .text unused
+DANSE 00000000
+
+Symbol: DANSE
+   Definitions
+      At line 29 in file Moteurs.s
+   Uses
+      At line 9 in file Moteurs.s
+Comment: DANSE used once
+WAIT 00000020
+
+Symbol: WAIT
+   Definitions
+      At line 46 in file Moteurs.s
+   Uses
+      At line 42 in file Moteurs.s
+Comment: WAIT used once
+wait1 00000022
+
+Symbol: wait1
+   Definitions
+      At line 47 in file Moteurs.s
+   Uses
+      At line 48 in file Moteurs.s
+Comment: wait1 used once
+4 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+DUREE 020FFFFD
+
+Symbol: DUREE
+   Definitions
+      At line 24 in file Moteurs.s
+   Uses
+      At line 46 in file Moteurs.s
+Comment: DUREE used once
+1 symbol
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+MOTEUR_DROIT_ARRIERE 00000000
+
+Symbol: MOTEUR_DROIT_ARRIERE
+   Definitions
+      At line 17 in file Moteurs.s
+   Uses
+      At line 40 in file Moteurs.s
+Comment: MOTEUR_DROIT_ARRIERE used once
+MOTEUR_DROIT_OFF 00000000
+
+Symbol: MOTEUR_DROIT_OFF
+   Definitions
+      At line 16 in file Moteurs.s
+   Uses
+      At line 50 in file Moteurs.s
+Comment: MOTEUR_DROIT_OFF used once
+MOTEUR_DROIT_ON 00000000
+
+Symbol: MOTEUR_DROIT_ON
+   Definitions
+      At line 15 in file Moteurs.s
+   Uses
+      At line 36 in file Moteurs.s
+Comment: MOTEUR_DROIT_ON used once
+MOTEUR_GAUCHE_AVANT 00000000
+
+Symbol: MOTEUR_GAUCHE_AVANT
+   Definitions
+      At line 21 in file Moteurs.s
+   Uses
+      At line 41 in file Moteurs.s
+Comment: MOTEUR_GAUCHE_AVANT used once
+MOTEUR_GAUCHE_OFF 00000000
+
+Symbol: MOTEUR_GAUCHE_OFF
+   Definitions
+      At line 20 in file Moteurs.s
+   Uses
+      At line 51 in file Moteurs.s
+Comment: MOTEUR_GAUCHE_OFF used once
+MOTEUR_GAUCHE_ON 00000000
+
+Symbol: MOTEUR_GAUCHE_ON
+   Definitions
+      At line 19 in file Moteurs.s
+   Uses
+      At line 37 in file Moteurs.s
+Comment: MOTEUR_GAUCHE_ON used once
+MOTEUR_INIT 00000000
+
+Symbol: MOTEUR_INIT
+   Definitions
+      At line 13 in file Moteurs.s
+   Uses
+      At line 33 in file Moteurs.s
+Comment: MOTEUR_INIT used once
+7 symbols
+349 symbols in table
