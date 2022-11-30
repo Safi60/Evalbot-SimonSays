@@ -185,6 +185,8 @@
             <uocXRam>0</uocXRam>
             <RvdsVP>0</RvdsVP>
             <RvdsMve>0</RvdsMve>
+            <RvdsCdeCp>0</RvdsCdeCp>
+            <nBranchProt>0</nBranchProt>
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
@@ -351,7 +353,7 @@
             <NoWarn>0</NoWarn>
             <uSurpInc>0</uSurpInc>
             <useXO>0</useXO>
-            <uClangAs>0</uClangAs>
+            <ClangAsOpt>4</ClangAsOpt>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
@@ -383,11 +385,6 @@
           <GroupName>Source Group 1</GroupName>
           <Files>
             <File>
-              <FileName>RK_Config_Moteur.s</FileName>
-              <FileType>2</FileType>
-              <FilePath>..\..\..\Downloads\RK_Config_Moteur.s</FilePath>
-            </File>
-            <File>
               <FileName>Moteurs.s</FileName>
               <FileType>2</FileType>
               <FilePath>.\Moteurs.s</FilePath>
@@ -406,6 +403,11 @@
               <FileName>Config_switch.s</FileName>
               <FileType>2</FileType>
               <FilePath>.\Config_switch.s</FilePath>
+            </File>
+            <File>
+              <FileName>RK_Config_Moteur.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>..\..\Downloads\RK_Config_Moteur.s</FilePath>
             </File>
           </Files>
         </Group>

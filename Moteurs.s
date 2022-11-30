@@ -39,7 +39,7 @@ DANSE
 		; Rotation à droite de l'Evalbot
 		BL	MOTEUR_DROIT_ARRIERE
 		BL	MOTEUR_GAUCHE_AVANT
-		BL	WAIT
+		BL WAIT
 		
 		
 ; Boucle Attente

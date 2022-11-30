@@ -89,7 +89,6 @@ __main
 	; Clignote 2 fois pour lancer le jeu
 
 	BL CLIGNOTE2
-	BL DANSE
 
 ;Début du jeu
 ;Initialisation des variables utilisées
@@ -115,6 +114,7 @@ loop
 ; On compte le nombre de case à lire dans la séquence
 sequence	CMP r0, r4	; Comparaison nombre de LED à afficher
 			MOV r12, #0	; 
+
 			BEQ bumpers	; Si toute la séquence qui doit s'afficher a clignoté : on vérifie les bumpers
 			; On choisit si on doit allumer la LED1 ou la LED2
 			LDRB r5, [r2, r4]
@@ -137,13 +137,16 @@ bumpers 	CMP r4,	r12
 			MOV r5, r2
 			B	lireEntrees	; Sinon  on lit les états des bumpers
 
+			
+			
+lireEntrees 
 			; Lecture de l'état du BUMPER DROIT
-lireEntrees LDR r7, = GPIO_PORTE_BASE + (PORT0<<2)
+			LDR r7, = GPIO_PORTE_BASE + (PORT0<<2)
 			LDR r9, [r7]
 			CMP r9, #0x01
 			BNE	save1	; Si le bumper droit a été activé
 			
-		; Lecture de l'état du BUMPER GAUCHE
+			; Lecture de l'état du BUMPER GAUCHE
 			LDR r7, = GPIO_PORTE_BASE +(PORT1<<2)
 			LDR r9, [r7]
 			CMP r9, #0x02
@@ -171,13 +174,9 @@ compared
 save0
 			LDRB r5, [r2,r12]
 			ADD r12, #1
-			MOV r8, #1
+			MOV r8, #0
 			BL WAIT
 			
-WAIT	ldr r1, =0xAFFFFF 
-wait1	subs r1, #1
-        bne wait1
-		BX LR
 
 ; Si erreur on envoie vers le scénario de la défaite, sinon on reprend la vérification des bumpers
 compareg	CMP r5, #0
@@ -186,31 +185,37 @@ compareg	CMP r5, #0
 	
 	; Scénario de défaite : on fait clignoter 3 fois les LEDS et on va à la fin du programme
 lose
-			;BL CLIGNOTE3
-			;B fin
-			BL restart_sequence
+			BL CLIGNOTE3
+			B fin
+			;BL restart_sequence
 
 
 restart_sequence
-			;PUSH { R0, R6, R10-R12, LR }
+			PUSH { R0, R6, R10-R12, LR }
 			BL CONFIG_SWITCH
 			
 			BL READ_STATE_SW2
 			BNE restart_sequence
-			BL init
-			;POP { R0, R6, R10-R12, PC }	
-	
+			B sequence
+			POP { R0, R6, R10-R12, PC }	
+
 	; Scénario de victoire : on fait clignoter 2 fois les LEDS
 	; et le robot fait un tour sur lui même (danse de la joie), puis on va à la fin du programme
 win 		BL CLIGNOTE2
 			BL DANSE
 			B fin
-			
+
+WAIT	LDR r1, =0x002FFFFF 						 
+wait1	SUBS r1, #1
+        BNE wait1
+		BX LR
+
 ; Fin du programme
 fin
 ; Initialisation de la séquence des LEDS (0 : LED gauche, 1 : LED droite)
 	AREA constants, DATA, READONLY
-SEQUENCE DCB 1,0,1,0,1
+SEQUENCE DCB 1,0,0,1,0
+
 
 	END
 	

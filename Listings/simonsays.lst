@@ -136,7 +136,7 @@ ARM Macro Assembler    Page 3
 
    68 00000000         __main
    69 00000000         
-   70 00000000 4E36            LDR              r6, = SYSCTL_PERIPH_GPIOF
+   70 00000000 4E37            LDR              r6, = SYSCTL_PERIPH_GPIOF
    71 00000002 F04F 0030       MOV              r0, #0x00000030
    72 00000006 6030            STR              r0, [r6]
    73 00000008         
@@ -146,12 +146,12 @@ ARM Macro Assembler    Page 3
    77 0000000C BF00            NOP
    78 0000000E         
    79 0000000E         ; Activer fonction digitale - PORT E 
-   80 0000000E 4F34            LDR              r7, = GPIO_PORTE_BASE+GPIO_O_DE
+   80 0000000E 4F35            LDR              r7, = GPIO_PORTE_BASE+GPIO_O_DE
 N
    81 00000010 F04F 0603       LDR              r6, = PORT01
    82 00000014 603E            STR              r6, [r7]
    83 00000016         
-   84 00000016 4F33            LDR              r7, = GPIO_PORTE_BASE+GPIO_PUR
+   84 00000016 4F34            LDR              r7, = GPIO_PORTE_BASE+GPIO_PUR
    85 00000018 F04F 0603       LDR              r6, = PORT01
    86 0000001C 603E            STR              r6, [r7]
    87 0000001E         
@@ -159,200 +159,204 @@ N
    89 0000001E         ; Clignote 2 fois pour lancer le jeu
    90 0000001E         
    91 0000001E F7FF FFFE       BL               CLIGNOTE2
-   92 00000022 F7FF FFFE       BL               DANSE
-   93 00000026         
-   94 00000026         ;Début du jeu
-   95 00000026         ;Initialisation des variables utilisées
-   96 00000026         
-   97 00000026         init
-   98 00000026 F04F 0000       MOV              r0,#0
-   99 0000002A F04F 0105       LDR              r1,=TAILLE
-  100 0000002E 4A2E            LDR              r2,=SEQUENCE
-  101 00000030 F04F 0400       MOV              r4,#0
-  102 00000034 F81F 5004       LDRB             r5,SEQUENCE
-  103 00000038 E7FF            B                loop
-  104 0000003A         
-  105 0000003A         
-  106 0000003A         ; Boucle qui vérifie si on a atteint la fin de la séquen
+   92 00000022         
+   93 00000022         ;Début du jeu
+   94 00000022         ;Initialisation des variables utilisées
+   95 00000022         
+   96 00000022         init
+   97 00000022 F04F 0000       MOV              r0,#0
+   98 00000026 F04F 0105       LDR              r1,=TAILLE
+   99 0000002A 4A30            LDR              r2,=SEQUENCE
+  100 0000002C F04F 0400       MOV              r4,#0
+  101 00000030 F81F 5004       LDRB             r5,SEQUENCE
+  102 00000034 E7FF            B                loop
+  103 00000036         
+  104 00000036         
+  105 00000036         ; Boucle qui vérifie si on a atteint la fin de la séquen
                        ce
-  107 0000003A         loop
-  108 0000003A 4281            CMP              r1, r0      ; Comparaison entre
+  106 00000036         loop
+  107 00000036 4281            CMP              r1, r0      ; Comparaison entre
                                                              l'index actuel et 
                                                             la longueur de la s
                                                             équence
-  109 0000003C D048            BEQ              win         ; Victoire car tout
+  108 00000038 D048            BEQ              win         ; Victoire car tout
                                                             e la séquence a été
                                                              reproduite sans er
                                                             reur 
-  110 0000003E F100 0001       ADD              r0, #1      ; Incrémentation de
+  109 0000003A F100 0001       ADD              r0, #1      ; Incrémentation de
                                                              l'index
-  111 00000042 F04F 0400       MOV              r4, #0
-  112 00000046 E7FF            B                sequence
-  113 00000048         
-  114 00000048         
-  115 00000048         ; On compte le nombre de case à lire dans la séquence
-  116 00000048 42A0    sequence
+  110 0000003E F04F 0400       MOV              r4, #0
+  111 00000042 E7FF            B                sequence
+  112 00000044         
+  113 00000044         
+  114 00000044         ; On compte le nombre de case à lire dans la séquence
+  115 00000044 42A0    sequence
                                CMP              r0, r4      ; Comparaison nombr
+                                                            e de LED à afficher
 
 
 
 ARM Macro Assembler    Page 4 
 
 
-                                                            e de LED à afficher
                                                             
-  117 0000004A F04F 0C00       MOV              r12, #0     ; 
-  118 0000004E D00B            BEQ              bumpers     ; Si toute la séque
+  116 00000046 F04F 0C00       MOV              r12, #0     ; 
+  117 0000004A         
+  118 0000004A D00B            BEQ              bumpers     ; Si toute la séque
                                                             nce qui doit s'affi
                                                             cher a clignoté : o
                                                             n vérifie les bumpe
                                                             rs
-  119 00000050         ; On choisit si on doit allumer la LED1 ou la LED2
-  120 00000050 5D15            LDRB             r5, [r2, r4]
-  121 00000052 F104 0401       ADD              r4, #1
-  122 00000056 2D00            CMP              r5, #0
-  123 00000058 D000            BEQ              test1
-  124 0000005A D102            BNE              test2
-  125 0000005C         
-  126 0000005C         ; Allumage LED1
-  127 0000005C F7FF FFFE 
+  119 0000004C         ; On choisit si on doit allumer la LED1 ou la LED2
+  120 0000004C 5D15            LDRB             r5, [r2, r4]
+  121 0000004E F104 0401       ADD              r4, #1
+  122 00000052 2D00            CMP              r5, #0
+  123 00000054 D000            BEQ              test1
+  124 00000056 D102            BNE              test2
+  125 00000058         
+  126 00000058         ; Allumage LED1
+  127 00000058 F7FF FFFE 
                        test1   BL               CLIGNOTEG
-  128 00000060 E7F2            B                sequence
-  129 00000062         
-  130 00000062         ; Allumage LED2
-  131 00000062 F7FF FFFE 
+  128 0000005C E7F2            B                sequence
+  129 0000005E         
+  130 0000005E         ; Allumage LED2
+  131 0000005E F7FF FFFE 
                        test2   BL               CLIGNOTED
-  132 00000066 E7EF            B                sequence
-  133 00000068         
-  134 00000068         ; Vérification des bumpers
-  135 00000068 4564    bumpers CMP              r4, r12
-  136 0000006A D0E6            BEQ              loop        ; Si tous les bumpe
+  132 00000062 E7EF            B                sequence
+  133 00000064         
+  134 00000064         ; Vérification des bumpers
+  135 00000064 4564    bumpers CMP              r4, r12
+  136 00000066 D0E6            BEQ              loop        ; Si tous les bumpe
                                                             rs ont été activés 
                                                             sans erreur :on rep
                                                             rend l'affichage de
                                                              la séquence
-  137 0000006C 4615            MOV              r5, r2
-  138 0000006E E7FF            B                lireEntrees ; Sinon  on lit les
+  137 00000068 4615            MOV              r5, r2
+  138 0000006A E7FF            B                lireEntrees ; Sinon  on lit les
                                                              états des bumpers
-  139 00000070         
-  140 00000070         ; Lecture de l'état du BUMPER DROIT
-  141 00000070 4F1E    lireEntrees
-                               LDR              r7, = GPIO_PORTE_BASE + (PORT0<
+  139 0000006C         
+  140 0000006C         
+  141 0000006C         
+  142 0000006C         lireEntrees
+  143 0000006C         ; Lecture de l'état du BUMPER DROIT
+  144 0000006C 4F20            LDR              r7, = GPIO_PORTE_BASE + (PORT0<
 <2)
-  142 00000072 F8D7 9000       LDR              r9, [r7]
-  143 00000076 F1B9 0F01       CMP              r9, #0x01
-  144 0000007A D106            BNE              save1       ; Si le bumper droi
+  145 0000006E F8D7 9000       LDR              r9, [r7]
+  146 00000072 F1B9 0F01       CMP              r9, #0x01
+  147 00000076 D106            BNE              save1       ; Si le bumper droi
                                                             t a été activé
-  145 0000007C         
-  146 0000007C         ; Lecture de l'état du BUMPER GAUCHE
-  147 0000007C 4F1C            LDR              r7, = GPIO_PORTE_BASE +(PORT1<<
+  148 00000078         
+  149 00000078         ; Lecture de l'état du BUMPER GAUCHE
+  150 00000078 4F1E            LDR              r7, = GPIO_PORTE_BASE +(PORT1<<
 2)
-  148 0000007E F8D7 9000       LDR              r9, [r7]
-  149 00000082 F1B9 0F02       CMP              r9, #0x02
-  150 00000086 D10B            BNE              save0       ; Si le bumper gauc
+  151 0000007A F8D7 9000       LDR              r9, [r7]
+  152 0000007E F1B9 0F02       CMP              r9, #0x02
+  153 00000082 D10B            BNE              save0       ; Si le bumper gauc
                                                             he a été activé
-  151 00000088         
-  152 00000088         ; Si aucun n'a été activé on relit les états
-  153 00000088 E7F2            B                lireEntrees
-  154 0000008A         
-  155 0000008A         
-  156 0000008A         ; On attend d'avoir l'entrée nécessaire à la vérificatio
-                       n 
+  154 00000084         
+  155 00000084         ; Si aucun n'a été activé on relit les états
+  156 00000084 E7F2            B                lireEntrees
+  157 00000086         
+  158 00000086         
 
 
 
 ARM Macro Assembler    Page 5 
 
 
-  157 0000008A         save1
-  158 0000008A F812 500C       LDRB             r5, [r2,r12]
-  159 0000008E F10C 0C01       ADD              r12, #1
-  160 00000092 F04F 0800       MOV              r8, #0
-  161 00000096 F000 F80B       BL               WAIT
-  162 0000009A         
-  163 0000009A         
-  164 0000009A         ; Si erreur on envoie vers le scénario de la défaite, si
+  159 00000086         ; On attend d'avoir l'entrée nécessaire à la vérificatio
+                       n 
+  160 00000086         save1
+  161 00000086 F812 500C       LDRB             r5, [r2,r12]
+  162 0000008A F10C 0C01       ADD              r12, #1
+  163 0000008E F04F 0800       MOV              r8, #0
+  164 00000092 F000 F820       BL               WAIT
+  165 00000096         
+  166 00000096         
+  167 00000096         ; Si erreur on envoie vers le scénario de la défaite, si
                        non on reprend la vérification des bumpers
-  165 0000009A         compared
-  166 0000009A 2D01            CMP              r5, #1
-  167 0000009C D0E4            BEQ              bumpers
-  168 0000009E E00E            B                lose
-  169 000000A0         
-  170 000000A0         ; On attend d'avoir l'entrée nécessaire à la vérificatio
+  168 00000096         compared
+  169 00000096 2D01            CMP              r5, #1
+  170 00000098 D0E4            BEQ              bumpers
+  171 0000009A E00A            B                lose
+  172 0000009C         
+  173 0000009C         ; On attend d'avoir l'entrée nécessaire à la vérificatio
                        n
-  171 000000A0         save0
-  172 000000A0 F812 500C       LDRB             r5, [r2,r12]
-  173 000000A4 F10C 0C01       ADD              r12, #1
-  174 000000A8 F04F 0801       MOV              r8, #1
-  175 000000AC F000 F800       BL               WAIT
-  176 000000B0         
-  177 000000B0 4910    WAIT    ldr              r1, =0xAFFFFF
-  178 000000B2 3901    wait1   subs             r1, #1
-  179 000000B4 D1FD            bne              wait1
-  180 000000B6 4770            BX               LR
-  181 000000B8         
-  182 000000B8         ; Si erreur on envoie vers le scénario de la défaite, si
+  174 0000009C         save0
+  175 0000009C F812 500C       LDRB             r5, [r2,r12]
+  176 000000A0 F10C 0C01       ADD              r12, #1
+  177 000000A4 F04F 0800       MOV              r8, #0
+  178 000000A8 F000 F815       BL               WAIT
+  179 000000AC         
+  180 000000AC         
+  181 000000AC         ; Si erreur on envoie vers le scénario de la défaite, si
                        non on reprend la vérification des bumpers
-  183 000000B8 2D00    compareg
+  182 000000AC 2D00    compareg
                                CMP              r5, #0
-  184 000000BA D0D5            BEQ              bumpers
-  185 000000BC E7FF            B                lose
-  186 000000BE         
-  187 000000BE         ; Scénario de défaite : on fait clignoter 3 fois les LED
+  183 000000AE D0D9            BEQ              bumpers
+  184 000000B0 E7FF            B                lose
+  185 000000B2         
+  186 000000B2         ; Scénario de défaite : on fait clignoter 3 fois les LED
                        S et on va à la fin du programme
-  188 000000BE         lose
-  189 000000BE         ;BL CLIGNOTE3
-  190 000000BE         ;B fin
-  191 000000BE F000 F800       BL               restart_sequence
-  192 000000C2         
-  193 000000C2         
-  194 000000C2         restart_sequence
-  195 000000C2         ;PUSH { R0, R6, R10-R12, LR }
-  196 000000C2 F7FF FFFE       BL               CONFIG_SWITCH
-  197 000000C6         
-  198 000000C6 F7FF FFFE       BL               READ_STATE_SW2
-  199 000000CA D1FA            BNE              restart_sequence
-  200 000000CC F7FF FFAB       BL               init
-  201 000000D0         ;POP { R0, R6, R10-R12, PC } 
-  202 000000D0         
-  203 000000D0         ; Scénario de victoire : on fait clignoter 2 fois les LE
+  187 000000B2         lose
+  188 000000B2 F7FF FFFE       BL               CLIGNOTE3
+  189 000000B6 E012            B                fin
+  190 000000B8         ;BL restart_sequence
+  191 000000B8         
+  192 000000B8         
+  193 000000B8         restart_sequence
+  194 000000B8 E92D 5C41       PUSH             { R0, R6, R10-R12, LR }
+  195 000000BC F7FF FFFE       BL               CONFIG_SWITCH
+  196 000000C0         
+  197 000000C0 F7FF FFFE       BL               READ_STATE_SW2
+  198 000000C4 D1F8            BNE              restart_sequence
+  199 000000C6 E7BD            B                sequence
+  200 000000C8 E8BD 9C41       POP              { R0, R6, R10-R12, PC }
+  201 000000CC         
+  202 000000CC         ; Scénario de victoire : on fait clignoter 2 fois les LE
                        DS
-  204 000000D0         ; et le robot fait un tour sur lui même (danse de la joi
+  203 000000CC         ; et le robot fait un tour sur lui même (danse de la joi
                        e), puis on va à la fin du programme
-  205 000000D0 F7FF FFFE 
+  204 000000CC F7FF FFFE 
                        win     BL               CLIGNOTE2
-  206 000000D4 F7FF FFFE       BL               DANSE
-  207 000000D8 E7FF            B                fin
+  205 000000D0 F7FF FFFE       BL               DANSE
+  206 000000D4 E003            B                fin
+  207 000000D6         
+  208 000000D6 4908    WAIT    LDR              r1, =0x002FFFFF
 
 
 
 ARM Macro Assembler    Page 6 
 
 
-  208 000000DA         
-  209 000000DA         ; Fin du programme
-  210 000000DA         fin
-  211 000000DA         ; Initialisation de la séquence des LEDS (0 : LED gauche
+  209 000000D8 3901    wait1   SUBS             r1, #1
+  210 000000DA D1FD            BNE              wait1
+  211 000000DC 4770            BX               LR
+  212 000000DE         
+  213 000000DE         ; Fin du programme
+  214 000000DE         fin
+  215 000000DE         ; Initialisation de la séquence des LEDS (0 : LED gauche
                        , 1 : LED droite)
-  212 000000DA 00 00 400FE108 
+  216 000000DE 00 00 400FE108 
               4002451C 
               40024510 
               00000000 
               40024004 
               40024008 
-              00AFFFFF         AREA             constants, DATA, READONLY
-  213 00000000 01 00 01 
-              00 01    SEQUENCE
-                               DCB              1,0,1,0,1
-  214 00000005         
-  215 00000005                 END
+              002FFFFF         AREA             constants, DATA, READONLY
+  217 00000000 01 00 00 
+              01 00    SEQUENCE
+                               DCB              1,0,0,1,0
+  218 00000005         
+  219 00000005         
+  220 00000005                 END
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
 ork --depend=.\objects\simonsays.d -o.\objects\simonsays.o -I.\RTE\_Target_1 -I
-C:\Users\Safi\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include -IC:\U
-sers\Safi\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\Device\ARM\ARMCM3\Include --p
-redefine="__EVAL SETA 1" --predefine="__MICROLIB SETA 1" --predefine="__UVISION
-_VERSION SETA 528" --predefine="_RTE_ SETA 1" --predefine="ARMCM3 SETA 1" --lis
-t=.\listings\simonsays.lst simonSays.s
+C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.9.0\CMSIS\Core\Include -IC:\Keil_v5\ARM\PACK\AR
+M\CMSIS\5.9.0\Device\ARM\ARMCM3\Include --predefine="__EVAL SETA 1" --predefine
+="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SETA 537" --predefine="_RTE
+_ SETA 1" --predefine="ARMCM3 SETA 1" --predefine="_RTE_ SETA 1" --list=.\listi
+ngs\simonsays.lst simonSays.s
 
 
 
@@ -367,14 +371,14 @@ Symbol: .text
    Uses
       None
 Comment: .text unused
-WAIT 000000B0
+WAIT 000000D6
 
 Symbol: WAIT
    Definitions
-      At line 177 in file simonSays.s
+      At line 208 in file simonSays.s
    Uses
-      At line 161 in file simonSays.s
-      At line 175 in file simonSays.s
+      At line 164 in file simonSays.s
+      At line 178 in file simonSays.s
 
 __main 00000000
 
@@ -384,105 +388,105 @@ Symbol: __main
    Uses
       At line 35 in file simonSays.s
 Comment: __main used once
-bumpers 00000068
+bumpers 00000064
 
 Symbol: bumpers
    Definitions
       At line 135 in file simonSays.s
    Uses
       At line 118 in file simonSays.s
-      At line 167 in file simonSays.s
-      At line 184 in file simonSays.s
+      At line 170 in file simonSays.s
+      At line 183 in file simonSays.s
 
-compared 0000009A
+compared 00000096
 
 Symbol: compared
    Definitions
-      At line 165 in file simonSays.s
+      At line 168 in file simonSays.s
    Uses
       None
 Comment: compared unused
-compareg 000000B8
+compareg 000000AC
 
 Symbol: compareg
    Definitions
-      At line 183 in file simonSays.s
+      At line 182 in file simonSays.s
    Uses
       None
 Comment: compareg unused
-fin 000000DA
+fin 000000DE
 
 Symbol: fin
    Definitions
-      At line 210 in file simonSays.s
+      At line 214 in file simonSays.s
    Uses
-      At line 207 in file simonSays.s
-Comment: fin used once
+      At line 189 in file simonSays.s
+      At line 206 in file simonSays.s
 
 
 
 ARM Macro Assembler    Page 2 Alphabetic symbol ordering
 Relocatable symbols
 
-init 00000026
+
+init 00000022
 
 Symbol: init
    Definitions
-      At line 97 in file simonSays.s
+      At line 96 in file simonSays.s
    Uses
-      At line 200 in file simonSays.s
-Comment: init used once
-lireEntrees 00000070
+      None
+Comment: init unused
+lireEntrees 0000006C
 
 Symbol: lireEntrees
    Definitions
-      At line 141 in file simonSays.s
+      At line 142 in file simonSays.s
    Uses
       At line 138 in file simonSays.s
-      At line 153 in file simonSays.s
+      At line 156 in file simonSays.s
 
-loop 0000003A
+loop 00000036
 
 Symbol: loop
    Definitions
-      At line 107 in file simonSays.s
+      At line 106 in file simonSays.s
    Uses
-      At line 103 in file simonSays.s
+      At line 102 in file simonSays.s
       At line 136 in file simonSays.s
 
-lose 000000BE
+lose 000000B2
 
 Symbol: lose
    Definitions
-      At line 188 in file simonSays.s
+      At line 187 in file simonSays.s
    Uses
-      At line 168 in file simonSays.s
-      At line 185 in file simonSays.s
+      At line 171 in file simonSays.s
+      At line 184 in file simonSays.s
 
-restart_sequence 000000C2
+restart_sequence 000000B8
 
 Symbol: restart_sequence
    Definitions
-      At line 194 in file simonSays.s
+      At line 193 in file simonSays.s
    Uses
-      At line 191 in file simonSays.s
-      At line 199 in file simonSays.s
-
-save0 000000A0
+      At line 198 in file simonSays.s
+Comment: restart_sequence used once
+save0 0000009C
 
 Symbol: save0
    Definitions
-      At line 171 in file simonSays.s
+      At line 174 in file simonSays.s
    Uses
-      At line 150 in file simonSays.s
+      At line 153 in file simonSays.s
 Comment: save0 used once
-save1 0000008A
+save1 00000086
 
 Symbol: save1
    Definitions
-      At line 157 in file simonSays.s
+      At line 160 in file simonSays.s
    Uses
-      At line 144 in file simonSays.s
+      At line 147 in file simonSays.s
 
 
 
@@ -490,17 +494,18 @@ ARM Macro Assembler    Page 3 Alphabetic symbol ordering
 Relocatable symbols
 
 Comment: save1 used once
-sequence 00000048
+sequence 00000044
 
 Symbol: sequence
    Definitions
-      At line 116 in file simonSays.s
+      At line 115 in file simonSays.s
    Uses
-      At line 112 in file simonSays.s
+      At line 111 in file simonSays.s
       At line 128 in file simonSays.s
       At line 132 in file simonSays.s
+      At line 199 in file simonSays.s
 
-test1 0000005C
+test1 00000058
 
 Symbol: test1
    Definitions
@@ -508,7 +513,7 @@ Symbol: test1
    Uses
       At line 123 in file simonSays.s
 Comment: test1 used once
-test2 00000062
+test2 0000005E
 
 Symbol: test2
    Definitions
@@ -516,21 +521,21 @@ Symbol: test2
    Uses
       At line 124 in file simonSays.s
 Comment: test2 used once
-wait1 000000B2
+wait1 000000D8
 
 Symbol: wait1
    Definitions
-      At line 178 in file simonSays.s
+      At line 209 in file simonSays.s
    Uses
-      At line 179 in file simonSays.s
+      At line 210 in file simonSays.s
 Comment: wait1 used once
-win 000000D0
+win 000000CC
 
 Symbol: win
    Definitions
-      At line 205 in file simonSays.s
+      At line 204 in file simonSays.s
    Uses
-      At line 109 in file simonSays.s
+      At line 108 in file simonSays.s
 Comment: win used once
 19 symbols
 
@@ -543,16 +548,16 @@ SEQUENCE 00000000
 
 Symbol: SEQUENCE
    Definitions
-      At line 213 in file simonSays.s
+      At line 217 in file simonSays.s
    Uses
-      At line 100 in file simonSays.s
-      At line 102 in file simonSays.s
+      At line 99 in file simonSays.s
+      At line 101 in file simonSays.s
 
 constants 00000000
 
 Symbol: constants
    Definitions
-      At line 212 in file simonSays.s
+      At line 216 in file simonSays.s
    Uses
       None
 Comment: constants unused
@@ -579,8 +584,8 @@ Symbol: GPIO_PORTE_BASE
    Uses
       At line 80 in file simonSays.s
       At line 84 in file simonSays.s
-      At line 141 in file simonSays.s
-      At line 147 in file simonSays.s
+      At line 144 in file simonSays.s
+      At line 150 in file simonSays.s
 
 GPIO_PUR 00000510
 
@@ -596,7 +601,7 @@ Symbol: PORT0
    Definitions
       At line 23 in file simonSays.s
    Uses
-      At line 141 in file simonSays.s
+      At line 144 in file simonSays.s
 Comment: PORT0 used once
 PORT01 00000003
 
@@ -613,7 +618,7 @@ Symbol: PORT1
    Definitions
       At line 26 in file simonSays.s
    Uses
-      At line 147 in file simonSays.s
+      At line 150 in file simonSays.s
 Comment: PORT1 used once
 SYSCTL_PERIPH_GPIOF 400FE108
 
@@ -635,7 +640,7 @@ Symbol: TAILLE
    Definitions
       At line 32 in file simonSays.s
    Uses
-      At line 99 in file simonSays.s
+      At line 98 in file simonSays.s
 Comment: TAILLE used once
 8 symbols
 
@@ -651,7 +656,7 @@ Symbol: CLIGNOTE2
       At line 37 in file simonSays.s
    Uses
       At line 91 in file simonSays.s
-      At line 205 in file simonSays.s
+      At line 204 in file simonSays.s
 
 CLIGNOTE3 00000000
 
@@ -659,8 +664,8 @@ Symbol: CLIGNOTE3
    Definitions
       At line 38 in file simonSays.s
    Uses
-      None
-Comment: CLIGNOTE3 unused
+      At line 188 in file simonSays.s
+Comment: CLIGNOTE3 used once
 CLIGNOTED 00000000
 
 Symbol: CLIGNOTED
@@ -683,7 +688,7 @@ Symbol: CONFIG_SWITCH
    Definitions
       At line 61 in file simonSays.s
    Uses
-      At line 196 in file simonSays.s
+      At line 195 in file simonSays.s
 Comment: CONFIG_SWITCH used once
 DANSE 00000000
 
@@ -691,9 +696,8 @@ Symbol: DANSE
    Definitions
       At line 41 in file simonSays.s
    Uses
-      At line 92 in file simonSays.s
-      At line 206 in file simonSays.s
-
+      At line 205 in file simonSays.s
+Comment: DANSE used once
 MOTEUR_DROIT_ARRIERE 00000000
 
 Symbol: MOTEUR_DROIT_ARRIERE
@@ -706,9 +710,9 @@ MOTEUR_DROIT_AVANT 00000000
 
 
 
+
 ARM Macro Assembler    Page 2 Alphabetic symbol ordering
 External symbols
-
 
 Symbol: MOTEUR_DROIT_AVANT
    Definitions
@@ -768,13 +772,13 @@ MOTEUR_GAUCHE_OFF 00000000
 
 Symbol: MOTEUR_GAUCHE_OFF
    Definitions
+      At line 54 in file simonSays.s
 
 
 
 ARM Macro Assembler    Page 3 Alphabetic symbol ordering
 External symbols
 
-      At line 54 in file simonSays.s
    Uses
       None
 Comment: MOTEUR_GAUCHE_OFF unused
@@ -808,7 +812,7 @@ Symbol: READ_STATE_SW2
    Definitions
       At line 63 in file simonSays.s
    Uses
-      At line 198 in file simonSays.s
+      At line 197 in file simonSays.s
 Comment: READ_STATE_SW2 used once
 19 symbols
 385 symbols in table

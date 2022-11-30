@@ -165,11 +165,11 @@ E_D_7<<2)
               40007200 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
 ork --depend=.\objects\config_switch.d -o.\objects\config_switch.o -I.\RTE\_Tar
-get_1 -IC:\Users\Safi\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Includ
-e -IC:\Users\Safi\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\Device\ARM\ARMCM3\Inc
-lude --predefine="__EVAL SETA 1" --predefine="__MICROLIB SETA 1" --predefine="_
-_UVISION_VERSION SETA 528" --predefine="_RTE_ SETA 1" --predefine="ARMCM3 SETA 
-1" --list=.\listings\config_switch.lst Config_switch.s
+get_1 -IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.9.0\CMSIS\Core\Include -IC:\Keil_v5\ARM
+\PACK\ARM\CMSIS\5.9.0\Device\ARM\ARMCM3\Include --predefine="__EVAL SETA 1" --p
+redefine="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SETA 537" --predefi
+ne="_RTE_ SETA 1" --predefine="ARMCM3 SETA 1" --predefine="_RTE_ SETA 1" --list
+=.\listings\config_switch.lst Config_switch.s
 
 
 
